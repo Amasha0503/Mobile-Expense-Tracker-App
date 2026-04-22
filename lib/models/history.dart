@@ -10,4 +10,5 @@ class History {
     required this.totalExpense,
     required this.balance,
   });
+
 }
