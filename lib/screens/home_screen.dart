@@ -18,10 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final pages = [
-      const FinancePage(),
-      const HistoryScreen(),
-    ];
+    final pages = [const FinancePage(), const HistoryScreen()];
 
     return Scaffold(
       body: pages[index],
@@ -31,14 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
           setState(() => index = i);
         },
         destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.wallet),
-            label: "Finances",
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.history),
-            label: "History",
-          ),
+          NavigationDestination(icon: Icon(Icons.wallet), label: "Finances"),
+          NavigationDestination(icon: Icon(Icons.history), label: "History"),
         ],
       ),
     );
@@ -52,7 +43,10 @@ class FinancePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Finance Tracker"),
+        title: const Text(
+          "TrackWallet",
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
+        ),
         centerTitle: false,
         titleSpacing: 20,
       ),
@@ -69,22 +63,22 @@ class FinancePage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FilledButton(
-  onPressed: () {
-    Provider.of<TrackController>(context, listen: false).startNewCycle();
-  },
-  style: FilledButton.styleFrom(
-    minimumSize: const Size(56, 56),
-    padding: EdgeInsets.zero,
-  ),
-  child: const Text(
-    "+",
-    style: TextStyle(
-      fontSize: 30,
-      fontWeight: FontWeight.w600,
-      height: 1,
-    ),
-  ),
-),
+        onPressed: () {
+          Provider.of<TrackController>(context, listen: false).startNewCycle();
+        },
+        style: FilledButton.styleFrom(
+          minimumSize: const Size(56, 56),
+          padding: EdgeInsets.zero,
+        ),
+        child: const Text(
+          "+",
+          style: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.w600,
+            height: 1,
+          ),
+        ),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }

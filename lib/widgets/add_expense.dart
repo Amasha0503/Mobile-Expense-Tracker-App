@@ -8,7 +8,7 @@ class AddExpenseDialog extends StatefulWidget {
   final Expense? editItem;
   final String? preselectedCategory;
 
-  const AddExpenseDialog({this.editItem, this.preselectedCategory});
+  const AddExpenseDialog({super.key, this.editItem, this.preselectedCategory});
 
   @override
   State<AddExpenseDialog> createState() => _AddExpenseDialogState();
@@ -21,16 +21,36 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
   String? selectedCategory;
 
   @override
+  void initState() {
+    super.initState();
+    final editItem = widget.editItem;
+    selectedCategory = editItem?.categoryId ?? widget.preselectedCategory;
+
+    if (editItem != null) {
+      desc.text = editItem.description;
+      amount.text = editItem.amount.toString();
+    }
+  }
+
+  @override
+  void dispose() {
+    desc.dispose();
+    amount.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final provider = Provider.of<TrackController>(context);
+    final isEditing = widget.editItem != null;
 
     return AlertDialog(
-      title: const Text("Add Expense"),
+      title: Text(isEditing ? "Edit Expense" : "Add Expense"),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           DropdownButtonFormField<String>(
-            value: selectedCategory,
+            initialValue: selectedCategory,
             hint: const Text("Select Category"),
             items: provider.categories.map((cat) {
               return DropdownMenuItem(value: cat.id, child: Text(cat.name));
@@ -56,16 +76,35 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
         TextButton(
           onPressed: () {
             if (selectedCategory == null) return;
+            final parsedAmount = double.tryParse(amount.text);
+            if (parsedAmount == null) return;
 
-            Provider.of<TrackController>(context, listen: false).addExpense(
-              Expense(
-                id: DateTime.now().millisecondsSinceEpoch.toString(),
-                categoryId: selectedCategory!,
-                date: DateTime.now(),
-                description: desc.text,
-                amount: double.parse(amount.text),
-              ),
-            );
+            final editItem = widget.editItem;
+
+            if (editItem != null) {
+              Provider.of<TrackController>(
+                context,
+                listen: false,
+              ).updateExpense(
+                Expense(
+                  id: editItem.id,
+                  categoryId: selectedCategory!,
+                  date: editItem.date,
+                  description: desc.text,
+                  amount: parsedAmount,
+                ),
+              );
+            } else {
+              Provider.of<TrackController>(context, listen: false).addExpense(
+                Expense(
+                  id: DateTime.now().millisecondsSinceEpoch.toString(),
+                  categoryId: selectedCategory!,
+                  date: DateTime.now(),
+                  description: desc.text,
+                  amount: parsedAmount,
+                ),
+              );
+            }
 
             Navigator.pop(context);
           },

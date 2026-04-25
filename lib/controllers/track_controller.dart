@@ -3,28 +3,64 @@ import 'package:smart_expense_tracker/models/category.dart';
 import 'package:smart_expense_tracker/models/expense.dart';
 import 'package:smart_expense_tracker/models/history.dart';
 import 'package:smart_expense_tracker/models/income.dart';
+import 'package:smart_expense_tracker/services/storage_service.dart';
 
 class TrackController extends ChangeNotifier {
+  TrackController() {
+    loadStoredData();
+  }
+
+  final StorageService _storageService = StorageService();
+  bool isLoading = true;
+
   List<Income> incomes = [];
   List<Expense> expenses = [];
   List<Category> categories = [];
   List<History> history = [];
 
+  Future<void> loadStoredData() async {
+    isLoading = true;
+    notifyListeners();
+    try {
+      final stored = _storageService.loadAll();
+      incomes = stored.incomes;
+      expenses = stored.expenses;
+      categories = stored.categories;
+      history = stored.history;
+    } finally {
+      isLoading = false;
+    }
+    notifyListeners();
+  }
+
+  Future<void> _persistAll() async {
+    await _storageService.saveAll(
+      incomes: incomes,
+      expenses: expenses,
+      categories: categories,
+      history: history,
+    );
+  }
+
   // ================= INCOME =================
 
   void addIncome(Income income) {
     incomes.add(income);
+    _persistAll();
     notifyListeners();
   }
 
   void deleteIncome(String id) {
     incomes.removeWhere((i) => i.id == id);
+    _persistAll();
     notifyListeners();
   }
 
   void updateIncome(Income updated) {
-    int index = incomes.indexWhere((i) => i.id == updated.id);
+    final index = incomes.indexWhere((i) => i.id == updated.id);
+    if (index == -1) return;
     incomes[index] = updated;
+    _persistAll();
     notifyListeners();
   }
 
@@ -34,11 +70,21 @@ class TrackController extends ChangeNotifier {
 
   void addExpense(Expense expense) {
     expenses.add(expense);
+    _persistAll();
     notifyListeners();
   }
 
   void deleteExpense(String id) {
     expenses.removeWhere((e) => e.id == id);
+    _persistAll();
+    notifyListeners();
+  }
+
+  void updateExpense(Expense updated) {
+    final index = expenses.indexWhere((e) => e.id == updated.id);
+    if (index == -1) return;
+    expenses[index] = updated;
+    _persistAll();
     notifyListeners();
   }
 
@@ -48,12 +94,14 @@ class TrackController extends ChangeNotifier {
 
   void addCategory(Category category) {
     categories.add(category);
+    _persistAll();
     notifyListeners();
   }
 
   void deleteCategory(String id) {
     categories.removeWhere((c) => c.id == id);
     expenses.removeWhere((e) => e.categoryId == id);
+    _persistAll();
     notifyListeners();
   }
 
@@ -79,7 +127,7 @@ class TrackController extends ChangeNotifier {
     expenses.clear();
     categories.clear();
 
-    //saveAll();
+    _persistAll();
     notifyListeners();
   }
 }

@@ -3,8 +3,11 @@ import 'package:provider/provider.dart';
 
 import 'controllers/track_controller.dart';
 import 'screens/home_screen.dart';
+import 'services/storage_service.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await StorageService.init();
   runApp(const FinanceTrackerApp());
 }
 
@@ -17,7 +20,7 @@ class FinanceTrackerApp extends StatelessWidget {
       create: (_) => TrackController(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: "Finance Tracker",
+        title: "TrackWallet",
         theme: ThemeData(
           scaffoldBackgroundColor: const Color(0xfff5f5f2),
           fontFamily: 'Roboto',
@@ -35,7 +38,16 @@ class FinanceTrackerApp extends StatelessWidget {
             elevation: 0,
           ),
         ),
-        home: const HomeScreen(),
+        home: Consumer<TrackController>(
+          builder: (context, controller, _) {
+            if (controller.isLoading) {
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            }
+            return const HomeScreen();
+          },
+        ),
       ),
     );
   }

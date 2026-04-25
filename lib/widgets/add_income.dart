@@ -17,9 +17,28 @@ class _AddIncomeDialogState extends State<AddIncomeDialog> {
   final amount = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    final editItem = widget.editItem;
+    if (editItem != null) {
+      desc.text = editItem.description;
+      amount.text = editItem.amount.toString();
+    }
+  }
+
+  @override
+  void dispose() {
+    desc.dispose();
+    amount.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final isEditing = widget.editItem != null;
+
     return AlertDialog(
-      title: const Text("Add Income"),
+      title: Text(isEditing ? "Edit Income" : "Add Income"),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -37,19 +56,35 @@ class _AddIncomeDialogState extends State<AddIncomeDialog> {
       actions: [
         TextButton(
           onPressed: () {
-            Provider.of<TrackController>(context, listen: false).addIncome(
-              Income(
-                id: DateTime.now().millisecondsSinceEpoch.toString(),
-                date: DateTime.now(),
-                description: desc.text,
-                amount: double.parse(amount.text),
-              ),
-            );
+            final parsedAmount = double.tryParse(amount.text);
+            if (parsedAmount == null) return;
+
+            final editItem = widget.editItem;
+
+            if (editItem != null) {
+              Provider.of<TrackController>(context, listen: false).updateIncome(
+                Income(
+                  id: editItem.id,
+                  date: editItem.date,
+                  description: desc.text,
+                  amount: parsedAmount,
+                ),
+              );
+            } else {
+              Provider.of<TrackController>(context, listen: false).addIncome(
+                Income(
+                  id: DateTime.now().millisecondsSinceEpoch.toString(),
+                  date: DateTime.now(),
+                  description: desc.text,
+                  amount: parsedAmount,
+                ),
+              );
+            }
 
             Navigator.pop(context);
           },
           child: const Text("Save"),
-        )
+        ),
       ],
     );
   }

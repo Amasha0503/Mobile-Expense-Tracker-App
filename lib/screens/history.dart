@@ -22,22 +22,10 @@ class HistoryScreen extends StatelessWidget {
     final rows = [
       const TableRow(
         children: [
-          Padding(
-            padding: EdgeInsets.all(8),
-            child: Text("Date"),
-          ),
-          Padding(
-            padding: EdgeInsets.all(8),
-            child: Text("Income"),
-          ),
-          Padding(
-            padding: EdgeInsets.all(8),
-            child: Text("Expense"),
-          ),
-          Padding(
-            padding: EdgeInsets.all(8),
-            child: Text("Balance"),
-          ),
+          Padding(padding: EdgeInsets.all(8), child: Text("Date")),
+          Padding(padding: EdgeInsets.all(8), child: Text("Income")),
+          Padding(padding: EdgeInsets.all(8), child: Text("Expense")),
+          Padding(padding: EdgeInsets.all(8), child: Text("Balance")),
         ],
       ),
       ...history.reversed.map(
@@ -49,15 +37,24 @@ class HistoryScreen extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(8),
-              child: Text(_formatAmount(item.totalIncome)),
+              child: Text(
+                _formatAmount(item.totalIncome),
+                style: const TextStyle(color: Colors.blue),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8),
-              child: Text(_formatAmount(item.totalExpense)),
+              child: Text(
+                _formatAmount(item.totalExpense),
+                style: const TextStyle(color: Colors.red),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8),
-              child: Text(_formatAmount(item.balance)),
+              child: Text(
+                _formatAmount(item.balance),
+                style: const TextStyle(color: Colors.green),
+              ),
             ),
           ],
         ),
@@ -65,9 +62,7 @@ class HistoryScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Finance History"),
-      ),
+      appBar: AppBar(title: const Text("Finance History")),
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: history.isEmpty

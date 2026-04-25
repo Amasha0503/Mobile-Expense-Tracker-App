@@ -33,7 +33,7 @@ class BalanceCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               "As of ${DateTime.now().toString().substring(0, 10)}",
-              style: const TextStyle(fontSize: 12),
+              style: const TextStyle(fontSize: 13),
             )
           ],
         ),
