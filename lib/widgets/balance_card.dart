@@ -24,9 +24,9 @@ class BalanceCard extends StatelessWidget {
             const SizedBox(height: 10),
             Text(
               provider.balance.toStringAsFixed(2),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 32,
-                color: Colors.green,
+                color: provider.balance >= 0 ? Colors.green : Colors.red,
                 fontWeight: FontWeight.bold,
               ),
             ),

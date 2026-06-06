@@ -42,8 +42,7 @@ class TrackController extends ChangeNotifier {
     );
   }
 
-  // ================= INCOME =================
-
+  
   void addIncome(Income income) {
     incomes.add(income);
     _persistAll();
@@ -66,7 +65,7 @@ class TrackController extends ChangeNotifier {
 
   double get totalIncome => incomes.fold(0, (sum, item) => sum + item.amount);
 
-  // ================= EXPENSE =================
+  
 
   void addExpense(Expense expense) {
     expenses.add(expense);
@@ -90,7 +89,7 @@ class TrackController extends ChangeNotifier {
 
   double get totalExpense => expenses.fold(0, (sum, item) => sum + item.amount);
 
-  // ================= CATEGORY =================
+  
 
   void addCategory(Category category) {
     categories.add(category);
@@ -105,11 +104,11 @@ class TrackController extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ================= BALANCE =================
+  
 
   double get balance => totalIncome - totalExpense;
 
-  // ================= START NEW =================
+  
 
   void startNewCycle() {
     if (incomes.isEmpty && expenses.isEmpty) return;
@@ -125,7 +124,7 @@ class TrackController extends ChangeNotifier {
 
     incomes.clear();
     expenses.clear();
-    categories.clear();
+    //categories.clear();
 
     _persistAll();
     notifyListeners();

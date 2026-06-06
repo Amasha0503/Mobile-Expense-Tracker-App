@@ -22,10 +22,22 @@ class HistoryScreen extends StatelessWidget {
     final rows = [
       const TableRow(
         children: [
-          Padding(padding: EdgeInsets.all(8), child: Text("Date")),
-          Padding(padding: EdgeInsets.all(8), child: Text("Income")),
-          Padding(padding: EdgeInsets.all(8), child: Text("Expense")),
-          Padding(padding: EdgeInsets.all(8), child: Text("Balance")),
+          Padding(
+            padding: EdgeInsets.all(8), 
+            child: Text("Date" ,style: TextStyle(fontWeight: FontWeight.bold),)
+          ),
+          Padding(
+            padding: EdgeInsets.all(8), 
+            child: Text("Income", style: TextStyle(fontWeight: FontWeight.bold),)
+          ),
+          Padding(
+            padding: EdgeInsets.all(8), 
+            child: Text("Expense", style: TextStyle(fontWeight: FontWeight.bold),)
+          ),
+          Padding(
+            padding: EdgeInsets.all(8), 
+            child: Text("Balance", style: TextStyle(fontWeight: FontWeight.bold),)
+          ),
         ],
       ),
       ...history.reversed.map(
@@ -39,7 +51,7 @@ class HistoryScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8),
               child: Text(
                 _formatAmount(item.totalIncome),
-                style: const TextStyle(color: Colors.blue),
+                style: const TextStyle(color: Color.fromARGB(255, 10, 120, 210)),
               ),
             ),
             Padding(
@@ -60,7 +72,6 @@ class HistoryScreen extends StatelessWidget {
         ),
       ),
     ];
-
     return Scaffold(
       appBar: AppBar(title: const Text("Finance History")),
       body: Padding(

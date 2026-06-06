@@ -141,10 +141,8 @@ class ExpenseList extends StatelessWidget {
           TextButton(
             onPressed: () {
               if (controller.text.isNotEmpty) {
-                Provider.of<TrackController>(
-                  context,
-                  listen: false,
-                ).addCategory(
+                Provider.of<TrackController>(context,listen: false,)
+                .addCategory(
                   Category(
                     id: DateTime.now()
                         .millisecondsSinceEpoch

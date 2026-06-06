@@ -46,32 +46,16 @@ class StorageService {
   }
 
   StoredData loadAll() {
-    final incomesRaw =
-        (_box.get(_incomesKey, defaultValue: <dynamic>[]) as List)
-            .cast<dynamic>();
-    final expensesRaw =
-        (_box.get(_expensesKey, defaultValue: <dynamic>[]) as List)
-            .cast<dynamic>();
-    final categoriesRaw =
-        (_box.get(_categoriesKey, defaultValue: <dynamic>[]) as List)
-            .cast<dynamic>();
-    final historyRaw =
-        (_box.get(_historyKey, defaultValue: <dynamic>[]) as List)
-            .cast<dynamic>();
+    final incomesRaw =(_box.get(_incomesKey, defaultValue: <dynamic>[]) as List).cast<dynamic>();
+    final expensesRaw =(_box.get(_expensesKey, defaultValue: <dynamic>[]) as List).cast<dynamic>();
+    final categoriesRaw =(_box.get(_categoriesKey, defaultValue: <dynamic>[]) as List).cast<dynamic>();
+    final historyRaw =(_box.get(_historyKey, defaultValue: <dynamic>[]) as List).cast<dynamic>();
 
     return StoredData(
-      incomes: incomesRaw
-          .map((e) => _incomeFromMap(Map<String, dynamic>.from(e as Map)))
-          .toList(),
-      expenses: expensesRaw
-          .map((e) => _expenseFromMap(Map<String, dynamic>.from(e as Map)))
-          .toList(),
-      categories: categoriesRaw
-          .map((e) => _categoryFromMap(Map<String, dynamic>.from(e as Map)))
-          .toList(),
-      history: historyRaw
-          .map((e) => _historyFromMap(Map<String, dynamic>.from(e as Map)))
-          .toList(),
+      incomes: incomesRaw.map((e) => _incomeFromMap(Map<String, dynamic>.from(e as Map))).toList(),
+      expenses: expensesRaw.map((e) => _expenseFromMap(Map<String, dynamic>.from(e as Map))).toList(),
+      categories: categoriesRaw.map((e) => _categoryFromMap(Map<String, dynamic>.from(e as Map))).toList(),
+      history: historyRaw.map((e) => _historyFromMap(Map<String, dynamic>.from(e as Map))).toList(),
     );
   }
 
