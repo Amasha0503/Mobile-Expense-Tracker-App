@@ -45,7 +45,10 @@ class FinancePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           "TrackWallet",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
+          style: TextStyle(
+            fontSize: 28, 
+            fontWeight: FontWeight.w800, 
+            color: Colors.teal),
         ),
         centerTitle: false,
         titleSpacing: 20,
@@ -70,14 +73,7 @@ class FinancePage extends StatelessWidget {
           minimumSize: const Size(56, 56),
           padding: EdgeInsets.zero,
         ),
-        child: const Text(
-          "+",
-          style: TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.w600,
-            height: 1,
-          ),
-        ),
+          child: const Icon(Icons.restart_alt, size: 30),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
