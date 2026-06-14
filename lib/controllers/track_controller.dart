@@ -42,7 +42,6 @@ class TrackController extends ChangeNotifier {
     );
   }
 
-  
   void addIncome(Income income) {
     incomes.add(income);
     _persistAll();
@@ -64,8 +63,6 @@ class TrackController extends ChangeNotifier {
   }
 
   double get totalIncome => incomes.fold(0, (sum, item) => sum + item.amount);
-
-  
 
   void addExpense(Expense expense) {
     expenses.add(expense);
@@ -89,8 +86,6 @@ class TrackController extends ChangeNotifier {
 
   double get totalExpense => expenses.fold(0, (sum, item) => sum + item.amount);
 
-  
-
   void addCategory(Category category) {
     categories.add(category);
     _persistAll();
@@ -104,17 +99,14 @@ class TrackController extends ChangeNotifier {
     notifyListeners();
   }
 
-  
-
   double get balance => totalIncome - totalExpense;
-
-  
 
   void startNewCycle() {
     if (incomes.isEmpty && expenses.isEmpty) return;
 
     history.add(
       History(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
         date: DateTime.now(),
         totalIncome: totalIncome,
         totalExpense: totalExpense,
@@ -126,6 +118,12 @@ class TrackController extends ChangeNotifier {
     expenses.clear();
     //categories.clear();
 
+    _persistAll();
+    notifyListeners();
+  }
+
+  void deleteHistoryRecords(List<String> ids) {
+    history.removeWhere((h) => ids.contains(h.id));
     _persistAll();
     notifyListeners();
   }
